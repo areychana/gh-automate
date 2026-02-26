@@ -1,65 +1,90 @@
-# GitHub Automation CLI Tool
+# gh-automate
 
-## Overview
-The `gh-automate` project is a command-line interface (CLI) tool designed to automate common tasks on GitHub. This tool allows users to easily manage their GitHub repositories and issues directly from the command line.
+A Python CLI tool to automate common GitHub tasks from the command line.
 
 ## Features
-- List repositories
-- Create issues
-- List issues
-- Close issues
+
+-  List repositories for any GitHub user
+-  Create issues
+-  List open issues (pull requests excluded)
+-  Close issues
+-  Auto-label issues based on keywords
 
 ## Installation
-To get started with the `gh-automate` tool, follow these steps:
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/gh-automate.git
+   ```bash
+   git clone https://github.com/areychana/gh-automate.git
    cd gh-automate
    ```
 
-2. Install the required dependencies:
-   ```
+2. Install dependencies:
+   ```bash
    pip install -r requirements.txt
    ```
 
-3. Create a `.env` file in the root directory and add your GitHub personal access token:
+3. Set up your GitHub token:
+   ```bash
+   cp .env.example .env
    ```
-   GITHUB_TOKEN=your_github_token_here
-   ```
+   Then edit `.env` and replace `your_github_token_here` with a real token.
+   Generate one at [github.com/settings/tokens](https://github.com/settings/tokens) with `repo` and `read:user` scopes.
 
 ## Usage
-After installation, you can use the CLI tool by running the following command:
 
-```
+```bash
 python src/cli.py [command]
 ```
 
 ### Commands
-- **List Repositories**
-  ```
-  python src/cli.py list-repos
-  ```
 
-- **Create an Issue**
-  ```
-  python src/cli.py create-issue "Issue Title" "Issue Body"
-  ```
-
-- **List Issues**
-  ```
-  python src/cli.py list-issues
-  ```
-
-- **Close an Issue**
-  ```
-  python src/cli.py close-issue issue_number
-  ```
-
-## Additional Information
-For more details on how to use each command, refer to the help option:
-```
-python src/cli.py --help
+**List repositories for a user**
+```bash
+python src/cli.py list-repos <username>
+# e.g.
+python src/cli.py list-repos octocat
 ```
 
-Feel free to contribute to the project by submitting issues or pull requests. Happy automating!
+**Create an issue**
+```bash
+python src/cli.py create-issue <owner/repo> "<title>" --body "<description>"
+# e.g.
+python src/cli.py create-issue octocat/Hello-World "Bug: login fails" --body "Steps to reproduce..."
+```
+
+**List open issues**
+```bash
+python src/cli.py list-issues <owner/repo>
+# e.g.
+python src/cli.py list-issues octocat/Hello-World
+```
+
+**Close an issue**
+```bash
+python src/cli.py close-issue <owner/repo> <issue_number>
+# e.g.
+python src/cli.py close-issue octocat/Hello-World 42
+```
+
+**Auto-label an issue**
+
+Automatically applies labels (`bug`, `enhancement`, `documentation`, `testing`) based on keywords found in the issue title and body.
+```bash
+python src/cli.py auto-label <owner/repo> <issue_number>
+# e.g.
+python src/cli.py auto-label octocat/Hello-World 42
+```
+
+## Running Tests
+
+```bash
+pytest
+```
+
+## Contributing
+
+Pull requests are welcome! Please open an issue first to discuss what you'd like to change.
+
+## License
+
+MIT
